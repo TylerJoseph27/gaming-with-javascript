@@ -1,6 +1,31 @@
-# Getting Started with Create React App and Redux
+# Gaming with JavaScript
+
+A React app that uses [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript), [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS), and [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) to build a memory game and a turn-based game that run in a web browser.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+
+## Table of Contents
+
+* [General Info](#general-info)
+* [Technologies](#technologies)
+* [Available Scripts](#available-scripts)
+* [Learn More](#learn-more)
+
+## General Info
+
+This site was made with [React](https://reactjs.org/) as well as [React Redux](https://react-redux.js.org/), and was deployed to [Netlify](https://www.netlify.com/). It uses only JavaScript (for the logic and interactivity) and CSS (for the styling and animations), it does not use any other game engines or rendering libraries.
+
+## Technologies
+
+This project was created with:
+
+* HTML
+* CSS
+* JavaScript
+* React
+* Redux
+* React Redux
+* Redux Toolkit
 
 ## Available Scripts
 
