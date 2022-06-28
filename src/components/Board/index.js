@@ -55,9 +55,9 @@ export const Board = ({ resetBoard }) => {
 
   return (
     <>
-      <div className="turn-based-game__buttons">
+      {(!battleSequence || battleSequence === 'inactive') && <div className="turn-based-game__buttons">
         <Button label="New Game" callback={resetBoard} />
-      </div>
+      </div>}
       <div className="turn-based-game__board">
         {gameMode === 'easy' && <Player type="archer" />}
         {gameMode === 'normal' && <Player type="king" />}

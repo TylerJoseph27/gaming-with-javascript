@@ -15,7 +15,7 @@ export const TurnBasedGame = () => {
   const gameMode = useSelector(state => state.turnBasedGame.gameMode);
   const dispatch = useDispatch();
 
-  // reset game state
+  // set game initial state
   const resetGame = () => {
     dispatch(setGameMode(''));
     dispatch(setAnnouncement(''));

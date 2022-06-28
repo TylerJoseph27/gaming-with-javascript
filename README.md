@@ -15,6 +15,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 This site was made with [React](https://reactjs.org/) as well as [React Redux](https://react-redux.js.org/), and was deployed to [Netlify](https://www.netlify.com/). It uses only JavaScript (for the logic and interactivity) and CSS (for the styling and animations), it does not use any other game engines or rendering libraries.
 
+The first game is a memory game where the user must match eight pairs of cards, only two cards can be shown at once so the user must remember the locations of previous cards in order to match every pair. The second game is a turn-based battle simulator that has the user and enemy character (the javascript logic of the browser) take turns picking one out of three actions to perform. Whichever character defeats the opposing character first wins.
+
 ## Technologies
 
 This project was created with:

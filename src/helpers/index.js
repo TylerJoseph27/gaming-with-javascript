@@ -6,7 +6,7 @@ export const genRanNum = (max = 1, min = 0) => {
 
 /* function that calculates and returns an array of
 random numbers based on a minimum and maximum number 
-with a user defined size and no repeating numbers*/
+with a user defined size and no repeating numbers */
 export const genRanNumArr = (size = 1, max = 1, min = 0) => {
   const arr = [];
 
@@ -34,10 +34,10 @@ export const objZip = (arr1, arr2, label1, label2) => {
 };
 
 /* function to return resolved promise after a set amount of time */
-export const wait = ms => {
+export const wait = (ms = 0) => {
   return new Promise(resolve => {
-    setTimeout(() => {
-      resolve();
+    const timeoutID = setTimeout(() => {
+      resolve(timeoutID);
     }, ms);
   });
 }
@@ -77,11 +77,13 @@ export const playerData = {
   health: 100,
   maxHealth: 100,
   magic: {
-    amount: 10,
-    count: 10
+    amount: 12,
+    count: 12
   },
-  maxMagic: 10,
-  resistance: 0
+  maxMagic: 12,
+  resistance: 0,
+  evasion: 20,
+  crit: 0
 };
 
 /* enemy data object */
@@ -102,35 +104,36 @@ export const enemyData = {
   },
   health: 100,
   maxHealth: 100,
-  resistance: 0
+  resistance: 0,
+  evasion: 20
 };
 
 /* array to simulate probability of enemy performing certain actions */
 export const enemyActions = [
-  'light-attack',
-  'light-attack',
-  'light-attack',
-  'light-attack',
-  'light-attack',
-  'heavy-attack',
-  'heavy-attack',
-  'heavy-attack',
+  'light attack',
+  'light attack',
+  'light attack',
+  'light attack',
+  'light attack',
+  'heavy attack',
+  'heavy attack',
+  'heavy attack',
   'heal',
   'heal'
 ];
 
 /* array to simulate probability of enemy performing certain actions */
 export const enemyActionsNoHeal = [
-  'light-attack',
-  'light-attack',
-  'light-attack',
-  'light-attack',
-  'light-attack',
-  'light-attack',
-  'heavy-attack',
-  'heavy-attack',
-  'heavy-attack',
-  'heavy-attack'
+  'light attack',
+  'light attack',
+  'light attack',
+  'light attack',
+  'light attack',
+  'light attack',
+  'heavy attack',
+  'heavy attack',
+  'heavy attack',
+  'heavy attack'
 ];
 
 /* function to simulate the chance of an event happening */
@@ -148,10 +151,16 @@ export const probability = (chance = 0) => {
 export const attack = (attacker = { damage: 0, accuracy: 0 }, defender = { resistance: 0 }) => {
   if (probability(attacker.accuracy / 10)) {
     const damage = attacker.damage - (attacker.damage * (defender.resistance / 100));
-    return damage
+    return damage;
   } else {
     return 0;
   }
+};
+
+/* function to return damage of a critical attack */
+export const critAttack = (attacker = { damage: 0 }, defender = { resistance: 0 }) => {
+  const damage = (attacker.damage * 2) - (attacker.damage * (defender.resistance / 100));
+  return damage;
 };
 
 /* function to return health restored by a heal */
@@ -161,4 +170,9 @@ export const heal = (healer = { health: 0, accuracy: 0 }) => {
   } else {
     return 0;
   }
+};
+
+/* function to return successful/unsuccessful event */
+export const roll = (chance = 0) => {
+  return probability(chance / 10);
 };

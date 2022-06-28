@@ -72,6 +72,11 @@ export const turnBasedGameSlice = createSlice({
     setPlayerHealth: (state, action) => {
       state.playerStatus.health = action.payload;
     },
+    setPlayerMagic: (state, action) => {
+      state.playerStatus.magic.amount = action.payload;
+      state.playerStatus.magic.count = action.payload;
+      state.playerStatus.maxMagic = action.payload;
+    },
     incPlayerMagic: state => {
       state.playerStatus.magic.amount += 1;
     },
@@ -80,6 +85,12 @@ export const turnBasedGameSlice = createSlice({
     },
     setPlayerResist: (state, action) => {
       state.playerStatus.resistance = action.payload;
+    },
+    setPlayerEvade: (state, action) => {
+      state.playerStatus.evasion = action.payload;
+    },
+    setPlayerCrit: (state, action) => {
+      state.playerStatus.crit = action.payload;
     },
     setEnemyStatus: (state, action) => {
       state.enemyStatus = action.payload;
@@ -96,7 +107,7 @@ export const turnBasedGameSlice = createSlice({
   }
 })
 
-// generate and export actions
+// generate and export action creators
 export const {
   setGameMode,
   setAnnouncement,
@@ -109,9 +120,12 @@ export const {
   decPlayerAccuracy,
   resetPlayerAccuracy,
   setPlayerHealth,
+  setPlayerMagic,
   incPlayerMagic,
   decPlayerMagic,
   setPlayerResist,
+  setPlayerEvade,
+  setPlayerCrit,
   setEnemyStatus,
   setEnemyAction,
   setEnemyPlayState,

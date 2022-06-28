@@ -55,7 +55,7 @@ export const memoryGameSlice = createSlice({
   }
 })
 
-// generate and export actions
+// generate and export action creators
 export const {
   setCardIndices,
   setCardFaces,

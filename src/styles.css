@@ -17,6 +17,7 @@
   --magic-clr: hsl(210, 90%, 40%);
   --dmg-clr: hsl(0, 100%, 50%);
   --acc-clr: hsl(210, 100%, 60%);
+  --heal-clr: hsl(150, 100%, 40%);
   --px-size: 1;
   --enemy-x: 140px;
   --enemy-y: 93px;
@@ -49,11 +50,12 @@ body {
   font-size: 1.25rem;
 }
 .memory-game h2,
-.turn-based-game__start-menu h2 {
+.turn-based-game h2 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.75rem;
 }
-.nav h1 {
+.nav h1,
+.nav h2 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2.25rem;
 }
@@ -70,6 +72,9 @@ header.nav {
 }
 .nav h1 {
   display: none;
+}
+.nav h2 {
+  text-align: center;
 }
 .nav menu {
   display: flex;
@@ -210,6 +215,7 @@ main {
 .turn-based-game__buttons {
   justify-content: center;
 }
+
 .turn-based-game__board {
   display: flex;
   flex-direction: column;
@@ -234,11 +240,11 @@ main {
 }
 .health__bar {
   background-color: var(--health-clr);
-  transition: 1s;
+  transition: 2s;
 }
 .magic__bar {
   background-color: var(--magic-clr);
-  transition: 0.5s;
+  transition: 1s;
 }
 .health__text {
   padding: 0.25rem 1rem;
@@ -260,6 +266,7 @@ main {
 .enemy__sprite,
 .player__sprite {
   position: absolute;
+  transition: opacity 0.5s;
 }
 
 /* bringer of death sprite */
@@ -268,21 +275,17 @@ main {
   width: calc(var(--enemy-x) * var(--px-size));
   height: calc(var(--enemy-y) * var(--px-size));
 }
-.enemy__sprite--attack {
-  width: calc((var(--enemy-x) * 10) * var(--px-size));
-  animation: move-sprite 1s steps(10) infinite;
-}
-.enemy__sprite--cast {
-  width: calc((var(--enemy-x) * 9) * var(--px-size));
-  animation: move-sprite 1.35s steps(9) infinite;
-}
 .enemy__sprite--death {
   width: calc((var(--enemy-x) * 10) * var(--px-size));
-  animation: move-sprite 1s steps(10) infinite;
+  animation: move-sprite 1s steps(10);
 }
-.enemy__sprite--hurt {
-  width: calc((var(--enemy-x) * 3) * var(--px-size));
-  animation: move-sprite 0.6s steps(3) infinite;
+.enemy__sprite--heavy-attack {
+  width: calc((var(--enemy-x) * 9) * var(--px-size));
+  animation: move-sprite 0.9s steps(9);
+}
+.enemy__sprite--light-attack {
+  width: calc((var(--enemy-x) * 10) * var(--px-size));
+  animation: move-sprite 1s steps(10);
 }
 .enemy__sprite--idle {
   width: calc((var(--enemy-x) * 8) * var(--px-size));
@@ -290,11 +293,11 @@ main {
 }
 .enemy__sprite--spell {
   width: calc((var(--enemy-x) * 16) * var(--px-size));
-  animation: move-sprite 1.6s steps(16) infinite;
+  animation: move-sprite 1.6s steps(16);
 }
 .enemy__sprite--walk {
   width: calc((var(--enemy-x) * 8) * var(--px-size));
-  animation: move-sprite 1.2s steps(8) infinite;
+  animation: move-sprite 0.96s steps(8) infinite;
 }
 
 /* archer sprite */
@@ -306,20 +309,24 @@ main {
 .player-archer--light-attack {
   width: calc(var(--archer-x) * var(--px-size));
 }
+.player-archer--evade {
+  transform: translate(192px);
+  transition: transform 0.84s;
+}
 .player__sprite-archer {
-  top: 39%;
+  top: 40.6%;
 }
 .player__sprite-archer--death {
   width: calc((var(--player-x) * 24) * var(--px-size));
-  animation: move-sprite 1.8s steps(24) infinite;
+  animation: move-sprite 1.8s steps(24);
 }
 .player__sprite-archer--evade {
   width: calc((var(--player-x) * 14) * var(--px-size));
-  animation: move-sprite 1.05s steps(14) infinite;
+  animation: move-sprite 0.84s steps(14);
 }
 .player__sprite-archer--heavy-attack {
   width: calc((var(--player-x) * 28) * var(--px-size));
-  animation: move-sprite 1.4s steps(28) infinite;
+  animation: move-sprite 1.4s steps(28);
 }
 .player__sprite-archer--idle {
   width: calc((var(--player-x) * 8) * var(--px-size));
@@ -327,11 +334,11 @@ main {
 }
 .player__sprite-archer--light-attack {
   width: calc((var(--archer-x) * 14) * var(--px-size));
-  animation: move-sprite 1.05s steps(14) infinite;
+  animation: move-sprite 1.05s steps(14);
 }
 .player__sprite-archer--walk {
   width: calc((var(--player-x) * 8) * var(--px-size));
-  animation: move-sprite 0.8s steps(8) infinite;
+  animation: move-sprite 0.6s steps(8) infinite;
 }
 
 /* king sprite */
@@ -348,15 +355,15 @@ main {
 }
 .player__sprite-king--death {
   width: calc((var(--player-x) * 37) * var(--px-size));
-  animation: move-sprite 1.85s steps(37) infinite;
+  animation: move-sprite 1.85s steps(37);
 }
 .player__sprite-king--evade {
   width: calc((var(--player-x) * 14) * var(--px-size));
-  animation: move-sprite 1.05s steps(14) infinite;
+  animation: move-sprite 0.84s steps(14);
 }
 .player__sprite-king--heavy-attack {
   width: calc((var(--king-x) * 58) * var(--px-size));
-  animation: move-sprite 2.9s steps(58) infinite;
+  animation: move-sprite 2.175s steps(58);
 }
 .player__sprite-king--idle {
   width: calc((var(--player-x) * 18) * var(--px-size));
@@ -364,7 +371,7 @@ main {
 }
 .player__sprite-king--light-attack {
   width: calc((var(--player-x) * 30) * var(--px-size));
-  animation: move-sprite 1.5s steps(30) infinite;
+  animation: move-sprite 1.5s steps(30);
 }
 .player__sprite-king--walk {
   width: calc((var(--player-x) * 8) * var(--px-size));
@@ -386,20 +393,20 @@ main {
 }
 .player__sprite-warrior--critical-attack {
   width: calc((260px * 40) * var(--px-size));
-  animation: move-sprite 2.4s steps(40) infinite;
+  animation: move-sprite 2.4s steps(40);
   top: 15%;
 }
 .player__sprite-warrior--death {
   width: calc((var(--warrior-x) * 40) * var(--px-size));
-  animation: move-sprite 2s steps(40) infinite;
+  animation: move-sprite 2s steps(40);
 }
 .player__sprite-warrior--evade {
   width: calc((var(--warrior-x) * 8) * var(--px-size));
-  animation: move-sprite 0.8s steps(8) infinite;
+  animation: move-sprite 0.8s steps(8);
 }
 .player__sprite-warrior--heavy-attack {
   width: calc((var(--warrior-x) * 30) * var(--px-size));
-  animation: move-sprite 1.5s steps(30) infinite;
+  animation: move-sprite 1.5s steps(30);
 }
 .player__sprite-warrior--idle {
   width: calc((var(--warrior-x) * 16) * var(--px-size));
@@ -407,15 +414,27 @@ main {
 }
 .player__sprite-warrior--light-attack {
   width: calc((var(--warrior-x) * 30) * var(--px-size));
-  animation: move-sprite 1.8s steps(30) infinite;
+  animation: move-sprite 1.8s steps(30);
 }
 .player__sprite-warrior--taunt {
   width: calc((var(--warrior-x) * 18) * var(--px-size));
-  animation: move-sprite 1.35s steps(18) infinite;
+  animation: move-sprite 1.35s steps(18);
 }
 .player__sprite-warrior--walk {
   width: calc((var(--warrior-x) * 8) * var(--px-size));
   animation: move-sprite 0.96s steps(8) infinite;
+}
+
+.evade {
+  animation: dodge-sprite 0.5s;
+}
+
+.hurt {
+  animation: blink-sprite 0.5s;
+}
+
+.heal {
+  animation: flash-sprite 1s;
 }
 
 .paused {
@@ -517,12 +536,27 @@ footer {
   }
 }
 
-@media only screen and (min-width: 930px) {
+@media only screen and (min-width: 1200px)  {
+  :root {
+    --px-size: 2;
+  }
+  header.nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .nav h1 {
+    display: initial;
+    text-align: center;
+  }
+  .nav h2 {
+    visibility: hidden;
+  }
   .turn-based-game__board {
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;
-    width: min(100%, calc(400px * var(--px-size)));
+    /* 400px for sprite width and 2rem for padding */
+    width: min(100%, calc((400px * var(--px-size)) + 2rem));
     background-image: url('assets/background.png');
     background-position: bottom;
     background-size: cover;
@@ -539,19 +573,43 @@ footer {
   .player {
     top: 1.5rem;
   }
-}
-
-@media only screen and (min-width: 1200px)  {
-  :root {
-    --px-size: 2;
+  /* animations */
+  .enemy--walk,
+  .player-archer--walk,
+  .player-king--walk,
+  .player-warrior--walk {
+    transition: transform 2.5s linear;
   }
-  header.nav {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+  .enemy--walk,
+  .enemy--light-attack {
+    transform: translate(calc(-220px * var(--px-size)));
   }
-  .nav h1 {
-    display: initial;
-    text-align: center;
+  .enemy--heavy-attack {
+    transform: translate(calc(-220px * var(--px-size)));
+  }
+  .player-archer--walk {
+    transform: translate(calc(230px * var(--px-size)));
+  }
+  .player-archer--light-attack {
+    transform: translate(calc(210px * var(--px-size)));
+  }
+  .player-archer--heavy-attack {
+    transform: translate(calc(240px * var(--px-size)));
+  }
+  .player-king--walk,
+  .player-king--light-attack {
+    transform: translate(calc(250px * var(--px-size)));
+  }
+  .player-king--heavy-attack {
+    transform: translate(calc(230px * var(--px-size)));
+  }
+  .player-warrior--walk,
+  .player-warrior--light-attack,
+  .player-warrior--heavy-attack {
+    transform: translate(calc(230px * var(--px-size)));
+  }
+  .player-warrior--critical-attack {
+    transform: translate(calc(150px * var(--px-size)));
   }
 }
 
@@ -583,5 +641,41 @@ footer {
   }
   100% {
     transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes dodge-sprite {
+  0% {
+    transform: translate();
+  }
+  50% {
+    transform: translate(calc(14px * var(--px-size)));
+  }
+  100% {
+    transform: translate();
+  }
+}
+
+@keyframes blink-sprite {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes flash-sprite {
+  0% {
+    filter: none;
+  }
+  50% {
+    filter: brightness(125%) contrast(125%) saturate(125%) drop-shadow(0 0 4px var(--heal-clr));
+  }
+  100% {
+    filter: none;
   }
 }

@@ -7,7 +7,7 @@ export const Enemy = () => {
 
   return (
     <div className="character bringer-of-death">
-      <div className="enemy">
+      <div className={`enemy enemy--${enemyStatus.action}`}>
         <img
           className={`enemy__sprite enemy__sprite--${enemyStatus.action} pixel-art ${enemyStatus.playState}`}
           src={bringerOfDeath[enemyStatus.action]}

@@ -13,5 +13,5 @@ export const appSlice = createSlice({
   }
 })
 
-// generate and export actions
+// generate and export action creators
 export const { changeMode } = appSlice.actions;
