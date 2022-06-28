@@ -258,6 +258,9 @@ main {
 .character.bringer-of-death {
   align-items: center;
 }
+.character.bringer-of-death--spell {
+  position: absolute;
+}
 .enemy,
 .player {
   overflow: hidden;
@@ -274,6 +277,11 @@ main {
 .enemy {
   width: calc(var(--enemy-x) * var(--px-size));
   height: calc(var(--enemy-y) * var(--px-size));
+}
+.enemy--spell {
+  top: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.5s;
 }
 .enemy__sprite--death {
   width: calc((var(--enemy-x) * 10) * var(--px-size));
@@ -508,6 +516,9 @@ footer {
   .player {
     top: 1rem;
   }
+  .enemy--spell {
+    top: 4rem;
+  }
 }
 
 @media only screen and (min-width: 720px)  {
@@ -529,6 +540,9 @@ footer {
   .memory-game__card-front,
   .memory-game__card-back {
     padding: 1rem;
+  }
+  .enemy--spell {
+    top: 6rem;
   }
   .footer__text {
     flex-direction: row;
@@ -573,43 +587,43 @@ footer {
   .player {
     top: 1.5rem;
   }
+  .enemy--spell {
+    top: -3.5rem;
+  }
   /* animations */
   .enemy--walk,
   .player-archer--walk,
   .player-king--walk,
   .player-warrior--walk {
-    transition: transform 2.5s linear;
+    transition: transform 3s linear;
   }
   .enemy--walk,
   .enemy--light-attack {
     transform: translate(calc(-220px * var(--px-size)));
   }
-  .enemy--heavy-attack {
-    transform: translate(calc(-220px * var(--px-size)));
-  }
   .player-archer--walk {
-    transform: translate(calc(230px * var(--px-size)));
+    transform: translate(calc(240px * var(--px-size)));
   }
   .player-archer--light-attack {
-    transform: translate(calc(210px * var(--px-size)));
+    transform: translate(calc(220px * var(--px-size)));
   }
   .player-archer--heavy-attack {
-    transform: translate(calc(240px * var(--px-size)));
+    transform: translate(calc(250px * var(--px-size)));
   }
   .player-king--walk,
   .player-king--light-attack {
-    transform: translate(calc(250px * var(--px-size)));
+    transform: translate(calc(270px * var(--px-size)));
   }
   .player-king--heavy-attack {
-    transform: translate(calc(230px * var(--px-size)));
+    transform: translate(calc(250px * var(--px-size)));
   }
   .player-warrior--walk,
   .player-warrior--light-attack,
   .player-warrior--heavy-attack {
-    transform: translate(calc(230px * var(--px-size)));
+    transform: translate(calc(240px * var(--px-size)));
   }
   .player-warrior--critical-attack {
-    transform: translate(calc(150px * var(--px-size)));
+    transform: translate(calc(160px * var(--px-size)));
   }
 }
 
@@ -620,6 +634,9 @@ footer {
   }
   main {
     min-height: calc(100vh - 26.8rem);
+  }
+  .enemy--spell {
+    top: -4.5rem;
   }
 }
 

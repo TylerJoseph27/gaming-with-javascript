@@ -1,8 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Bar } from 'components';
-import { bringerOfDeath } from 'assets';
 
-export const Enemy = () => {
+export const Enemy = ({ spriteActions }) => {
   const enemyStatus = useSelector(state => state.turnBasedGame.enemyStatus);
 
   return (
@@ -10,7 +9,7 @@ export const Enemy = () => {
       <div className={`enemy enemy--${enemyStatus.action}`}>
         <img
           className={`enemy__sprite enemy__sprite--${enemyStatus.action} pixel-art ${enemyStatus.playState}`}
-          src={bringerOfDeath[enemyStatus.action]}
+          src={spriteActions[enemyStatus.action]}
           alt="enemy character"
         />
       </div>

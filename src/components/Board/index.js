@@ -4,11 +4,13 @@ import {
   Button,
   Player,
   Enemy,
+  EnemySpell,
   BattleMenu,
   setAnnouncement,
   setPlayerPlayState,
   setEnemyPlayState
 } from 'components';
+import { bringerOfDeath } from 'assets';
 import { typeMessage } from 'helpers';
 
 export const Board = ({ resetBoard }) => {
@@ -62,7 +64,8 @@ export const Board = ({ resetBoard }) => {
         {gameMode === 'easy' && <Player type="archer" />}
         {gameMode === 'normal' && <Player type="king" />}
         {gameMode === 'hard' && <Player type="warrior" />}
-        <Enemy />
+        <Enemy spriteActions={bringerOfDeath} />
+        <EnemySpell spriteAction={bringerOfDeath['spell']} />
       </div>
       <p className="turn-based-game__announcement">{announcement}</p>
       {!battleSequence && <BattleMenu typeAnnouncement={typeAnnouncement} />}

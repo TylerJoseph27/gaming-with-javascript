@@ -92,6 +92,9 @@ export const turnBasedGameSlice = createSlice({
     setPlayerCrit: (state, action) => {
       state.playerStatus.crit = action.payload;
     },
+    setPlayerTaunt: (state, action) => {
+      state.playerStatus.taunt = action.payload;
+    },
     setEnemyStatus: (state, action) => {
       state.enemyStatus = action.payload;
     },
@@ -100,6 +103,11 @@ export const turnBasedGameSlice = createSlice({
     },
     setEnemyPlayState: (state, action) => {
       state.enemyStatus.playState = action.payload;
+    },
+    decEnemyAccuracy: state => {
+      state.enemyStatus.lightAttack.accuracy = state.enemyStatus.lightAttack.accuracy - 10;
+      state.enemyStatus.heavyAttack.accuracy = state.enemyStatus.heavyAttack.accuracy - 10;
+      state.enemyStatus.heal.accuracy = state.enemyStatus.heal.accuracy - 10;
     },
     setEnemyHealth: (state, action) => {
       state.enemyStatus.health = action.payload;
@@ -126,8 +134,10 @@ export const {
   setPlayerResist,
   setPlayerEvade,
   setPlayerCrit,
+  setPlayerTaunt,
   setEnemyStatus,
   setEnemyAction,
   setEnemyPlayState,
+  decEnemyAccuracy,
   setEnemyHealth
 } = turnBasedGameSlice.actions;

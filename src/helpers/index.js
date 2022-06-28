@@ -83,7 +83,8 @@ export const playerData = {
   maxMagic: 12,
   resistance: 0,
   evasion: 20,
-  crit: 0
+  crit: 0,
+  taunt: 0
 };
 
 /* enemy data object */

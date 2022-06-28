@@ -6,7 +6,8 @@ import {
   setPlayerMagic,
   setPlayerResist,
   setPlayerEvade,
-  setPlayerCrit
+  setPlayerCrit,
+  setPlayerTaunt
 } from 'components';
 
 export const StartMenu = () => {
@@ -23,16 +24,19 @@ export const StartMenu = () => {
       dispatch(setPlayerResist(20));
       dispatch(setPlayerEvade(30));
       dispatch(setPlayerCrit(0));
+      dispatch(setPlayerTaunt(0));
     } else if (difficulty === 'normal') {
       dispatch(setPlayerMagic(12));
       dispatch(setPlayerResist(0));
       dispatch(setPlayerEvade(20));
       dispatch(setPlayerCrit(0));
+      dispatch(setPlayerTaunt(0));
     } else if (difficulty === 'hard') {
       dispatch(setPlayerMagic(8));
       dispatch(setPlayerResist(-40));
       dispatch(setPlayerEvade(10));
       dispatch(setPlayerCrit(20));
+      dispatch(setPlayerTaunt(50));
     }
   }
 

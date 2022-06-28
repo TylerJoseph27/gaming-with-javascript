@@ -10,8 +10,10 @@ import {
   setPlayerHealth,
   incPlayerMagic,
   decPlayerMagic,
+  setPlayerTaunt,
   setEnemyPlayState,
   setEnemyAction,
+  decEnemyAccuracy,
   setEnemyHealth
 } from 'components';
 import {
@@ -102,24 +104,45 @@ export const BattleMenu = ({ typeAnnouncement }) => {
     }
   }
 
+  // animate spell when enemy casts heavy attack
+  const animateEnemySpell = async () => {
+    const sprite = document.querySelector('.enemy--spell img');
+
+    // unpause and start animation
+    sprite.parentElement.style.opacity = 1;
+    sprite.classList.remove('paused');
+    sprite.style.animation = '';
+
+    // animation delay 1.5s
+    await wait(1500);
+
+    // stop and pause animation
+    sprite.parentElement.style.opacity = 0;
+    sprite.style.animation = 'none';
+    sprite.classList.add('paused');
+  }
+
   // handle light and heavy attack sequences of enemy
   const handleEnemyAttack = async (announcement, type, enemyAttack) => {
     typeAnnouncement(`The Bringer of Death chose to ${announcement}!`);
-
     // animation delay 2s
     await wait(2000);
-    animateSpriteAction('.enemy__sprite', 'walk');
 
-    // animation delay 2.5s
-    await wait(2500);
+    if (type === 'light-attack') {
+      animateSpriteAction('.enemy__sprite', 'walk');
+      // animation delay 3s
+      await wait(3000);
+    }
+
     animateSpriteAction('.enemy__sprite', type, 500);
 
     if (type === 'light-attack') {
       // animation delay 1.5s
       await wait(1500);
     } else if (type === 'heavy-attack') {
-      // animation delay 3s
-      await wait(3000);
+      // animation delay 1s
+      await wait(1000);
+      await animateEnemySpell();
     }
 
     animateSpriteAction('.enemy__sprite', 'idle');
@@ -133,6 +156,16 @@ export const BattleMenu = ({ typeAnnouncement }) => {
       typeAnnouncement(`The ${playerStatus.name} evaded the Bringer of Death's attack!`);
       // animation delay 3s
       await wait(3000);
+
+      if (playerStatus.taunt > 0 && roll(playerStatus.taunt)) {
+        typeAnnouncement(`The ${playerStatus.name} taunted the Bringer of Death!`);
+        animateSpriteAction('.player__sprite', 'taunt');
+        dispatch(decEnemyAccuracy());
+        dispatch(setPlayerTaunt(0));
+        // animation delay 2.5s
+        await wait(2500);
+      }
+
       endBattleSequence();
     } else {
       // calculate damage
@@ -152,6 +185,7 @@ export const BattleMenu = ({ typeAnnouncement }) => {
           animateSpriteAction('.player__sprite', 'death');
           // animation delay 2s
           await wait(2500);
+          // remove sprite
           document.querySelector('.player__sprite').style.opacity = '0';
           
           dispatch(setBattleSequence('inactive'));
@@ -168,13 +202,13 @@ export const BattleMenu = ({ typeAnnouncement }) => {
   // handle healing sequence of enemy
   const handleEnemyHeal = async () => {
     typeAnnouncement('The Bringer of Death chose to heal!');
-
     // animation delay 2s
     await wait(2000);
-    animateSprite('.enemy__sprite', 'heal');
 
+    animateSprite('.enemy__sprite', 'heal');
     // animation delay 0.5s
     await wait(500);
+
     // calculate healing received
     const healing = heal(enemyStatus.heal);
 
@@ -221,23 +255,22 @@ export const BattleMenu = ({ typeAnnouncement }) => {
 
   // handle light and heavy attack sequences of player
   const handlePlayerAttack = async (announcement, type, playerAttack) => {
-    // crit chance
-    const crit = roll(playerStatus.crit);
     startBattleSequence(announcement);
-
     // animation delay 2s
     await wait(2000);
+
     animateSpriteAction('.player__sprite', 'walk');
+    // crit chance
+    const crit = playerStatus.crit > 0 && roll(playerStatus.crit);
 
     if (crit) {
       typeAnnouncement(`The ${playerStatus.name} landed a critical hit!`);
-
       // animation delay 3s
       await wait(3000);
       animateSpriteAction('.player__sprite', 'critical-attack', 500);
     } else {
-      // animation delay 2.5s
-      await wait(2500);
+      // animation delay 3s
+      await wait(3000);
       animateSpriteAction('.player__sprite', type, 500);
     }
 
@@ -270,6 +303,7 @@ export const BattleMenu = ({ typeAnnouncement }) => {
           animateSpriteAction('.enemy__sprite', 'death');
           // animation delay 1.5s
           await wait(1500);
+          // remove sprite
           document.querySelector('.enemy__sprite').style.opacity = '0';
 
           dispatch(setBattleSequence('inactive'));
@@ -296,13 +330,13 @@ export const BattleMenu = ({ typeAnnouncement }) => {
   // handle healing sequence of player
   const handleHeal = async () => {
     startBattleSequence('heal');
-
     // animation delay 2s
     await wait(2000);
-    animateSprite('.player__sprite', 'heal');
 
+    animateSprite('.player__sprite', 'heal');
     // animation delay 0.5s
     await wait(500);
+
     // calculate healing received
     const healing = heal(playerStatus.heal);
 
@@ -357,7 +391,7 @@ export const BattleMenu = ({ typeAnnouncement }) => {
           )}
           callback={handleHeavyAttack}
         />
-        <Button
+        {playerStatus.health < playerStatus.maxHealth && <Button
           label={buttonLabel(
             'Heal',
             playerStatus.heal.health,
@@ -365,7 +399,7 @@ export const BattleMenu = ({ typeAnnouncement }) => {
             playerStatus.heal.accuracy
           )}
           callback={handleHeal}
-        />
+        />}
       </div>
       <div className="turn-based-game__buttons">
         <Button

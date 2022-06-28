@@ -4,6 +4,7 @@ export * from './BattleMenu';
 export * from './Board';
 export * from './Button';
 export * from './Enemy';
+export * from './EnemySpell';
 export * from './Footer';
 export * from './Header';
 export * from './HomeScreen';
