@@ -12,7 +12,7 @@ import {
   setCurrentCards,
   setDisabled
 } from 'components';
-import { genRanNum, genRanNumArr, objZip } from 'helpers';
+import { genRanNum, genRanNumArr, wait, zip } from 'helpers';
 
 export const MemoryGame = () => {
   const cards = useSelector(state => state.memoryGame.cards);
@@ -41,17 +41,17 @@ export const MemoryGame = () => {
   }
 
   // reset board to initial state
-  const resetBoard = () => {
+  const resetBoard = async () => {
     dispatch(setDisabled(true));
-    // animation delay
-    setTimeout(() => {
-      dispatch(setDisabled(false));
-    }, 1000);
     // flip every card to show backs
     document.querySelectorAll('.memory-game__card').forEach(element =>
       element.classList.remove('memory-game__card--flipped'));
-    // animation delay
-    setTimeout(setBoard, 500);
+    // animation delay 0.5s
+    await wait(500);
+    setBoard();
+    // animation delay 0.5s
+    await wait(500);
+    dispatch(setDisabled(false));
   };
 
   // reset state and increment turn count to end turn
@@ -63,16 +63,18 @@ export const MemoryGame = () => {
   }, [dispatch]);
 
   // check if cards match
-  const checkCards = () => {
+  const checkCards = useCallback(async () => {
     // check for valid cards
     if (firstCard && secondCard) {
       dispatch(setDisabled(true))
       // check for matching cards
       if (firstCard.cardFace === secondCard.cardFace && 
-        firstCard.cardOrder !== secondCard.cardOrder) {
+          firstCard.cardOrder !== secondCard.cardOrder) {
         // update state to show matching cards
         dispatch(setCurrentCards(currentCards.map(card => {
-          if (cardFaces[card.index] === firstCard.cardFace) {
+          // localhost condition for testing
+          if (cardFaces[card.index] === firstCard.cardFace ||
+              `http://localhost/${cardFaces[card.index]}` === firstCard.cardFace) {
             return {...card, matched: true};
           } else {
             return card;
@@ -80,22 +82,12 @@ export const MemoryGame = () => {
         })));
         endTurn();
       } else {
-        // animation delay
-        setTimeout(endTurn, 1000);
+        // animation delay 1s
+        await wait(1000);
+        endTurn();
       }
     }
-  };
-
-  // return h2 with text displaying win message
-  const winnerHeading = () => {
-    if (document.querySelectorAll('.memory-game__card--flipped').length === 16 && turnCount >= 8) {
-      return <h2>You Win!</h2>
-    }
-  }
-
-  useEffect(setBoard, [cards, dispatch]);
-  
-  useEffect(checkCards, [
+  }, [
     firstCard,
     secondCard,
     currentCards,
@@ -104,9 +96,22 @@ export const MemoryGame = () => {
     dispatch
   ]);
 
+  // return h2 with text displaying win message
+  const winnerHeading = () => {
+    if (document.querySelectorAll('.memory-game__card--flipped').length === 16 && turnCount >= 8) {
+      return <h2>You Win!</h2>;
+    }
+  }
+
+  useEffect(setBoard, [cards, dispatch]);
+
+  useEffect(() => {
+    checkCards();
+  }, [checkCards]);
+
   useEffect(() => {
     // combine arrays
-    const memoryCards = objZip(
+    const memoryCards = zip(
       cardIndices,
       cardOrder,
       'index',
@@ -120,7 +125,7 @@ export const MemoryGame = () => {
 
   return (
     <div className="memory-game">
-      <h2>{winnerHeading()}</h2>
+      {winnerHeading()}
       <button
         type="button"
         className="game__button"

@@ -20,13 +20,8 @@ export const genRanNumArr = (size = 1, max = 1, min = 0) => {
   return arr;
 };
 
-/* function to combine arrays with map method */
-export const arrZip = (arr1, arr2) => {
-  return arr1.map((element, index) => [element, arr2[index]]);
-};
-
-/* function to combine arrays into one array of objects with map method */
-export const objZip = (arr1, arr2, label1, label2) => {
+/* function to combine two arrays into one array of objects */
+export const zip = (arr1, arr2, label1, label2) => {
   return arr1.map((element, index) => ({
     [label1]: element,
     [label2]: arr2[index]
@@ -43,14 +38,15 @@ export const wait = (ms = 0) => {
 }
 
 /* function to display a message as if it is being typed */
-export const typeMessage = async (message = '', callback, displayMessage = () => {}, ms = 25) => {
+export const typeMessage = async (message = '', callback = () => {}, wrapperCallback = () => {}, ms = 25) => {
   if (message.length) {
     let visibleMessage = ''
     for (let i = 0; i < message.length; i++) {
       await wait(ms);
       visibleMessage = visibleMessage + message[i];
-      displayMessage(callback(visibleMessage));
+      wrapperCallback(callback(visibleMessage));
     }
+    return visibleMessage;
   }
 }
 
@@ -82,9 +78,9 @@ export const playerData = {
   },
   maxMagic: 12,
   resistance: 0,
-  evasion: 20,
-  crit: 0,
-  taunt: 0
+  evasion: 30,
+  taunt: 0,
+  crit: 0
 };
 
 /* enemy data object */
@@ -106,7 +102,7 @@ export const enemyData = {
   health: 100,
   maxHealth: 100,
   resistance: 0,
-  evasion: 20
+  evasion: 30
 };
 
 /* array to simulate probability of enemy performing certain actions */

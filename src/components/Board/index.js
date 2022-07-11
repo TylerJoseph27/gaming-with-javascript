@@ -7,6 +7,7 @@ import {
   EnemySpell,
   BattleMenu,
   setAnnouncement,
+  setBattleSequence,
   setPlayerPlayState,
   setEnemyPlayState
 } from 'components';
@@ -34,6 +35,8 @@ export const Board = ({ resetBoard }) => {
         typeAnnouncement(`The ${playerStatus.name} Wins!`);
       } else if (playerStatus.health === 0 && enemyStatus.health > 0) {
         typeAnnouncement(`The Bringer of Death Wins!`);
+      } else {
+        dispatch(setBattleSequence(''));
       }
     }
   }
@@ -52,7 +55,8 @@ export const Board = ({ resetBoard }) => {
     enemyStatus.health,
     playerStatus.health,
     playerStatus.name,
-    typeAnnouncement
+    typeAnnouncement,
+    dispatch
   ]);
 
   return (

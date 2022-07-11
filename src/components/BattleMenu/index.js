@@ -17,14 +17,14 @@ import {
   setEnemyHealth
 } from 'components';
 import {
+  genRanNum,
   wait,
+  enemyActions,
+  enemyActionsNoHeal,
   attack,
   critAttack,
   heal,
-  roll,
-  enemyActions,
-  enemyActionsNoHeal,
-  genRanNum
+  roll
 } from 'helpers';
 
 export const BattleMenu = ({ typeAnnouncement }) => {
@@ -65,23 +65,25 @@ export const BattleMenu = ({ typeAnnouncement }) => {
 
   // change animation by applying a different CSS class
   const animateSpriteAction = async (sprite, action, ms = 10) => {
-    // stop animation
-    document.querySelector(sprite).style.animation = 'none';
+    // check for sprite
+    if(document.querySelector(sprite)) {
+      // stop animation
+      document.querySelector(sprite).style.animation = 'none';
+      // animation delay
+      await wait(10);
 
-    // animation delay
-    await wait(10);
-
-    // chance animation/CSS class
-    if (sprite === '.enemy__sprite') {
-      dispatch(setEnemyAction(action));
-    } else if (sprite === '.player__sprite') {
-      dispatch(setPlayerAction(action));
+      // chance animation/CSS class
+      if (sprite === '.enemy__sprite') {
+        dispatch(setEnemyAction(action));
+      } else if (sprite === '.player__sprite') {
+        dispatch(setPlayerAction(action));
+      }
+      
+      // animation delay
+      await wait(ms);
+      // restart animation
+      document.querySelector(sprite).style.animation = '';
     }
-    
-    // animation delay
-    await wait(ms);
-    // restart animation
-    document.querySelector(sprite).style.animation = '';
   }
 
   // change animation by applying a different CSS class
@@ -106,20 +108,24 @@ export const BattleMenu = ({ typeAnnouncement }) => {
 
   // animate spell when enemy casts heavy attack
   const animateEnemySpell = async () => {
+    // find element
     const sprite = document.querySelector('.enemy--spell img');
 
-    // unpause and start animation
-    sprite.parentElement.style.opacity = 1;
-    sprite.classList.remove('paused');
-    sprite.style.animation = '';
+    // check for sprite
+    if (sprite) {
+      // unpause and start animation
+      sprite.parentElement.style.opacity = 1;
+      sprite.classList.remove('paused');
+      sprite.style.animation = '';
 
-    // animation delay 1.5s
-    await wait(1500);
+      // animation delay 1.5s
+      await wait(1500);
 
-    // stop and pause animation
-    sprite.parentElement.style.opacity = 0;
-    sprite.style.animation = 'none';
-    sprite.classList.add('paused');
+      // stop and pause animation
+      sprite.parentElement.style.opacity = 0;
+      sprite.style.animation = 'none';
+      sprite.classList.add('paused');
+    }
   }
 
   // handle light and heavy attack sequences of enemy
@@ -137,8 +143,8 @@ export const BattleMenu = ({ typeAnnouncement }) => {
     animateSpriteAction('.enemy__sprite', type, 500);
 
     if (type === 'light-attack') {
-      // animation delay 1.5s
-      await wait(1500);
+      // animation delay 2s
+      await wait(2000);
     } else if (type === 'heavy-attack') {
       // animation delay 1s
       await wait(1000);
@@ -185,8 +191,12 @@ export const BattleMenu = ({ typeAnnouncement }) => {
           animateSpriteAction('.player__sprite', 'death');
           // animation delay 2s
           await wait(2500);
-          // remove sprite
-          document.querySelector('.player__sprite').style.opacity = '0';
+
+          // check for sprite
+          if (document.querySelector('.player__sprite')) {
+            // remove sprite
+            document.querySelector('.player__sprite').style.opacity = '0';
+          }
           
           dispatch(setBattleSequence('inactive'));
         }
@@ -303,8 +313,12 @@ export const BattleMenu = ({ typeAnnouncement }) => {
           animateSpriteAction('.enemy__sprite', 'death');
           // animation delay 1.5s
           await wait(1500);
-          // remove sprite
-          document.querySelector('.enemy__sprite').style.opacity = '0';
+
+          // check for sprite
+          if (document.querySelector('.enemy__sprite')) {
+            // remove sprite
+            document.querySelector('.enemy__sprite').style.opacity = '0';
+          }
 
           dispatch(setBattleSequence('inactive'));
         }
@@ -362,7 +376,7 @@ export const BattleMenu = ({ typeAnnouncement }) => {
   // returns label for player action button
   const buttonLabel = (action, number, type, accuracy) => {
     return (
-      <p>{action}<br /><span className="dmg">
+      <p>{action}<br /> <span className="dmg">
         {number}
       </span> {type} <span className="acc">
         {accuracy}%

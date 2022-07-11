@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { changeMode } from 'components';
+import { setMode } from 'components';
 
 export const Header = () => {
   const mode = useSelector(state => state.app.mode);
@@ -11,19 +11,19 @@ export const Header = () => {
       {(!battleSequence || battleSequence === 'inactive') ? <menu>
         <li 
           className={`nav__item ${mode === 'home' && 'nav__item--active'}`}
-          onClick={() => dispatch(changeMode('home'))}
+          onClick={() => dispatch(setMode('home'))}
         >
           Home
         </li>
         <li
           className={`nav__item ${mode === 'memory' && 'nav__item--active'}`}
-          onClick={() => dispatch(changeMode('memory'))}
+          onClick={() => dispatch(setMode('memory'))}
         >
           Memory
         </li>
         <li
           className={`nav__item ${mode === 'turn-based' && 'nav__item--active'}`}
-          onClick={() => dispatch(changeMode('turn-based'))}
+          onClick={() => dispatch(setMode('turn-based'))}
         >
           Turn-Based
         </li>

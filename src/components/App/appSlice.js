@@ -7,11 +7,11 @@ export const appSlice = createSlice({
     mode: 'home'
   },
   reducers: {
-    changeMode: (state, action) => {
+    setMode: (state, action) => {
       state.mode = action.payload;
     }
   }
 })
 
 // generate and export action creators
-export const { changeMode } = appSlice.actions;
+export const { setMode } = appSlice.actions;

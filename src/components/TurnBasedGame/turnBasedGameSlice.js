@@ -1,15 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { enemyData, playerData } from 'helpers';
+
+const initialState = {
+  gameMode: '',
+  announcement: '',
+  battleSequence: 'inactive',
+  enemyStatus: enemyData,
+  playerStatus: playerData
+}
 
 // create and export slice of TurnBasedGame component
 export const turnBasedGameSlice = createSlice({
   name: 'turnBasedGame',
-  initialState: {
-    gameMode: '',
-    announcement: '',
-    battleSequence: '',
-    playerStatus: {},
-    enemyStatus: {}
-  },
+  initialState,
   reducers: {
     setGameMode: (state, action) => {
       state.gameMode = action.payload;
@@ -19,6 +22,23 @@ export const turnBasedGameSlice = createSlice({
     },
     setBattleSequence: (state, action) => {
       state.battleSequence = action.payload;
+    },
+    setEnemyStatus: (state, action) => {
+      state.enemyStatus = action.payload;
+    },
+    setEnemyAction: (state, action) => {
+      state.enemyStatus.action = action.payload;
+    },
+    setEnemyPlayState: (state, action) => {
+      state.enemyStatus.playState = action.payload;
+    },
+    decEnemyAccuracy: state => {
+      state.enemyStatus.lightAttack.accuracy = state.enemyStatus.lightAttack.accuracy - 10;
+      state.enemyStatus.heavyAttack.accuracy = state.enemyStatus.heavyAttack.accuracy - 10;
+      state.enemyStatus.heal.accuracy = state.enemyStatus.heal.accuracy - 10;
+    },
+    setEnemyHealth: (state, action) => {
+      state.enemyStatus.health = action.payload;
     },
     setPlayerStatus: (state, action) => {
       state.playerStatus = action.payload;
@@ -89,28 +109,11 @@ export const turnBasedGameSlice = createSlice({
     setPlayerEvade: (state, action) => {
       state.playerStatus.evasion = action.payload;
     },
-    setPlayerCrit: (state, action) => {
-      state.playerStatus.crit = action.payload;
-    },
     setPlayerTaunt: (state, action) => {
       state.playerStatus.taunt = action.payload;
     },
-    setEnemyStatus: (state, action) => {
-      state.enemyStatus = action.payload;
-    },
-    setEnemyAction: (state, action) => {
-      state.enemyStatus.action = action.payload;
-    },
-    setEnemyPlayState: (state, action) => {
-      state.enemyStatus.playState = action.payload;
-    },
-    decEnemyAccuracy: state => {
-      state.enemyStatus.lightAttack.accuracy = state.enemyStatus.lightAttack.accuracy - 10;
-      state.enemyStatus.heavyAttack.accuracy = state.enemyStatus.heavyAttack.accuracy - 10;
-      state.enemyStatus.heal.accuracy = state.enemyStatus.heal.accuracy - 10;
-    },
-    setEnemyHealth: (state, action) => {
-      state.enemyStatus.health = action.payload;
+    setPlayerCrit: (state, action) => {
+      state.playerStatus.crit = action.payload;
     }
   }
 })
@@ -120,6 +123,11 @@ export const {
   setGameMode,
   setAnnouncement,
   setBattleSequence,
+  setEnemyStatus,
+  setEnemyAction,
+  setEnemyPlayState,
+  decEnemyAccuracy,
+  setEnemyHealth,
   setPlayerStatus,
   setPlayerName,
   setPlayerAction,
@@ -133,11 +141,6 @@ export const {
   decPlayerMagic,
   setPlayerResist,
   setPlayerEvade,
-  setPlayerCrit,
   setPlayerTaunt,
-  setEnemyStatus,
-  setEnemyAction,
-  setEnemyPlayState,
-  decEnemyAccuracy,
-  setEnemyHealth
+  setPlayerCrit
 } = turnBasedGameSlice.actions;

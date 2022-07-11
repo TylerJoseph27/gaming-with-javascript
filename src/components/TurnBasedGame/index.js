@@ -6,22 +6,22 @@ import {
   setGameMode,
   setAnnouncement,
   setBattleSequence,
-  setPlayerStatus,
-  setEnemyStatus
+  setEnemyStatus,
+  setPlayerStatus
 } from 'components';
-import { playerData, enemyData } from 'helpers';
+import { enemyData, playerData } from 'helpers';
 
 export const TurnBasedGame = () => {
   const gameMode = useSelector(state => state.turnBasedGame.gameMode);
   const dispatch = useDispatch();
 
-  // set game initial state
+  // reset game to initial state
   const resetGame = () => {
     dispatch(setGameMode(''));
     dispatch(setAnnouncement(''));
-    dispatch(setBattleSequence(''));
-    dispatch(setPlayerStatus(playerData));
+    dispatch(setBattleSequence('inactive'));
     dispatch(setEnemyStatus(enemyData));
+    dispatch(setPlayerStatus(playerData));
   }
 
   useEffect(resetGame, [dispatch]);

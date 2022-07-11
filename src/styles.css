@@ -40,6 +40,16 @@ body {
   font-family: 'Fira Sans', sans-serif;
 }
 
+a:link {
+  color: var(--magic-clr);
+}
+a:visited {
+  color: var(--heal-clr);
+}
+a:hover {
+  color: var(--acc-clr);
+}
+
 /* shared fonts */
 
 .game__button,
@@ -145,6 +155,20 @@ main {
 }
 .game__button .acc {
   color: var(--acc-clr);
+}
+
+/* home screen */
+
+.home-screen {
+  max-width: 1440px;
+  margin: auto;
+}
+.home-screen h2 {
+  text-align: center;
+  margin: 2rem 0;
+}
+.home-screen p {
+  margin: 1rem 0;
 }
 
 /* memory game */
@@ -564,6 +588,9 @@ footer {
   }
   .nav h2 {
     visibility: hidden;
+  }
+  .home-screen h2 {
+    text-align: initial;
   }
   .turn-based-game__board {
     flex-direction: row;
