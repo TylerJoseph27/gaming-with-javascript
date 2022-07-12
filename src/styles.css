@@ -207,7 +207,7 @@ main {
 .memory-game__card-front,
 .memory-game__card-back {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.25rem;
   position: absolute;
   background-color: var(--fg-clr-2);
   box-shadow: 5px 5px 5px var(--shadow-1);
@@ -342,7 +342,7 @@ main {
   width: calc(var(--archer-x) * var(--px-size));
 }
 .player-archer--evade {
-  transform: translate(192px);
+  transform: translate(calc(34px * var(--px-size)));
   transition: transform 0.84s;
 }
 .player__sprite-archer {
@@ -513,7 +513,7 @@ footer {
 
 /* media queries */
 
-@media only screen and (max-width: 23rem)  {
+@media only screen and (max-width: 368px)  {
   .footer__text p {
     margin: 1rem;
   }
@@ -533,12 +533,16 @@ footer {
   .nav menu {
     flex-direction: row;
   }
+  .memory-game__card-front,
+  .memory-game__card-back {
+    padding: 0.5rem;
+  }
   .turn-based-game__buttons {
     flex-direction: row;
   }
   .enemy,
   .player {
-    top: 1rem;
+    top: 1.5rem;
   }
   .enemy--spell {
     top: 4rem;
@@ -611,8 +615,8 @@ footer {
   .character.bringer-of-death {
     align-items: flex-end;
   }
-  .player {
-    top: 1.5rem;
+  .enemy {
+    top: 0.5rem;
   }
   .enemy--spell {
     top: -3.5rem;

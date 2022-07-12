@@ -21,21 +21,21 @@ export const StartMenu = () => {
 
     // change player stats according to game difficulty
     if (difficulty === 'easy') {
-      dispatch(setPlayerMagic(16));
+      dispatch(setPlayerMagic(14));
       dispatch(setPlayerResist(20));
-      dispatch(setPlayerEvade(40));
+      dispatch(setPlayerEvade(30));
       dispatch(setPlayerTaunt(0));
       dispatch(setPlayerCrit(0));
     } else if (difficulty === 'normal') {
       dispatch(setPlayerMagic(12));
       dispatch(setPlayerResist(0));
-      dispatch(setPlayerEvade(30));
+      dispatch(setPlayerEvade(20));
       dispatch(setPlayerTaunt(0));
       dispatch(setPlayerCrit(0));
     } else if (difficulty === 'hard') {
-      dispatch(setPlayerMagic(8));
-      dispatch(setPlayerResist(-40));
-      dispatch(setPlayerEvade(20));
+      dispatch(setPlayerMagic(10));
+      dispatch(setPlayerResist(-20));
+      dispatch(setPlayerEvade(10));
       dispatch(setPlayerTaunt(50));
       dispatch(setPlayerCrit(10));
     }

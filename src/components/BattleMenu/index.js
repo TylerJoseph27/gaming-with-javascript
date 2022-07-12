@@ -4,9 +4,9 @@ import {
   setBattleSequence,
   setPlayerPlayState,
   setPlayerAction,
+  setPlayerAccuracy,
   incPlayerAccuracy,
   decPlayerAccuracy,
-  resetPlayerAccuracy,
   setPlayerHealth,
   incPlayerMagic,
   decPlayerMagic,
@@ -60,7 +60,7 @@ export const BattleMenu = ({ typeAnnouncement }) => {
   const endBattleSequence = () => {
     typeAnnouncement(`What will the ${playerStatus.name} do?`);
     dispatch(setBattleSequence(''));
-    dispatch(resetPlayerAccuracy());
+    dispatch(setPlayerAccuracy());
   }
 
   // change animation by applying a different CSS class
@@ -128,8 +128,23 @@ export const BattleMenu = ({ typeAnnouncement }) => {
     }
   }
 
+  // remove sprite after death animation and end battle
+  const handleDeath = async (sprite, ms) => {
+    animateSpriteAction(sprite, 'death');
+    // animation delay
+    await wait(ms);
+
+    // check for sprite
+    if (document.querySelector(sprite)) {
+      // remove sprite
+      document.querySelector(sprite).style.opacity = '0';
+    }
+
+    dispatch(setBattleSequence('inactive'));
+  }
+
   // handle light and heavy attack sequences of enemy
-  const handleEnemyAttack = async (announcement, type, enemyAttack) => {
+  const handleEnemyAttack = async (announcement, type, enemyAttack, playerHealth) => {
     typeAnnouncement(`The Bringer of Death chose to ${announcement}!`);
     // animation delay 2s
     await wait(2000);
@@ -180,25 +195,14 @@ export const BattleMenu = ({ typeAnnouncement }) => {
       if (damage > 0) {
         animateSprite('.player__sprite', 'hurt');
         // calculate remaining health of player
-        const health = playerStatus.health - damage;
+        const health = playerHealth - damage;
 
         if (health > 0) {
           dispatch(setPlayerHealth(health));
           endBattleSequence();
         } else {
           dispatch(setPlayerHealth(0));
-
-          animateSpriteAction('.player__sprite', 'death');
-          // animation delay 2s
-          await wait(2500);
-
-          // check for sprite
-          if (document.querySelector('.player__sprite')) {
-            // remove sprite
-            document.querySelector('.player__sprite').style.opacity = '0';
-          }
-          
-          dispatch(setBattleSequence('inactive'));
+          handleDeath('.player__sprite', 2500);
         }
       } else {
         typeAnnouncement(`The Bringer of Death's attack failed.`);
@@ -210,7 +214,7 @@ export const BattleMenu = ({ typeAnnouncement }) => {
   }
 
   // handle healing sequence of enemy
-  const handleEnemyHeal = async () => {
+  const handleEnemyHeal = async (enemyHealth) => {
     typeAnnouncement('The Bringer of Death chose to heal!');
     // animation delay 2s
     await wait(2000);
@@ -224,7 +228,7 @@ export const BattleMenu = ({ typeAnnouncement }) => {
 
     if (healing > 0) {
       // calculate new health pool of enemy
-      const health = enemyStatus.health + healing;
+      const health = enemyHealth + healing;
 
       if (health < enemyStatus.maxHealth) {
         dispatch(setEnemyHealth(health));
@@ -242,24 +246,24 @@ export const BattleMenu = ({ typeAnnouncement }) => {
   }
 
   // handle action choice sequence of enemy
-  const handleEnemyAction = () => {
+  const handleEnemyAction = (playerHealth = playerStatus.health, enemyHealth = enemyStatus.health) => {
     // declare action
     let enemyAction = '';
 
-    if (enemyStatus.health === enemyStatus.maxHealth) {
+    if (enemyHealth === enemyStatus.maxHealth) {
       // set action choices for when full health
       enemyAction = enemyActionsNoHeal[genRanNum(enemyActions.length)];
-    } else if (enemyStatus.health < enemyStatus.maxHealth) {
+    } else if (enemyHealth < enemyStatus.maxHealth) {
       // set action choices for when below max health
       enemyAction = enemyActions[genRanNum(enemyActions.length)];
     }
 
     if (enemyAction === 'light attack') {
-      handleEnemyAttack(enemyAction, 'light-attack', enemyStatus.lightAttack);
+      handleEnemyAttack(enemyAction, 'light-attack', enemyStatus.lightAttack, playerHealth);
     } else if (enemyAction === 'heavy attack') {
-      handleEnemyAttack(enemyAction, 'heavy-attack', enemyStatus.heavyAttack);
+      handleEnemyAttack(enemyAction, 'heavy-attack', enemyStatus.heavyAttack, playerHealth);
     } else if (enemyAction === 'heal') {
-      handleEnemyHeal();
+      handleEnemyHeal(enemyHealth);
     }
   }
 
@@ -306,21 +310,10 @@ export const BattleMenu = ({ typeAnnouncement }) => {
 
         if (health > 0) {
           dispatch(setEnemyHealth(health));
-          handleEnemyAction();
+          handleEnemyAction(playerStatus.health, health);
         } else {
           dispatch(setEnemyHealth(0));
-          
-          animateSpriteAction('.enemy__sprite', 'death');
-          // animation delay 1.5s
-          await wait(1500);
-
-          // check for sprite
-          if (document.querySelector('.enemy__sprite')) {
-            // remove sprite
-            document.querySelector('.enemy__sprite').style.opacity = '0';
-          }
-
-          dispatch(setBattleSequence('inactive'));
+          handleDeath('.enemy__sprite', 1500);
         }
       } else {
         typeAnnouncement(`The ${playerStatus.name}'s attack failed.`);
@@ -360,11 +353,11 @@ export const BattleMenu = ({ typeAnnouncement }) => {
 
       if (health < playerStatus.maxHealth) {
         dispatch(setPlayerHealth(health));
+        handleEnemyAction(health);
       } else {
         dispatch(setPlayerHealth(playerStatus.maxHealth));
+        handleEnemyAction(playerStatus.maxHealth);
       }
-
-      handleEnemyAction();
     } else {
       typeAnnouncement(`The ${playerStatus.name}'s heal failed.`);
       // animation delay 2s

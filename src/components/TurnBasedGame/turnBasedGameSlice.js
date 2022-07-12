@@ -32,10 +32,14 @@ export const turnBasedGameSlice = createSlice({
     setEnemyPlayState: (state, action) => {
       state.enemyStatus.playState = action.payload;
     },
-    decEnemyAccuracy: state => {
-      state.enemyStatus.lightAttack.accuracy = state.enemyStatus.lightAttack.accuracy - 10;
-      state.enemyStatus.heavyAttack.accuracy = state.enemyStatus.heavyAttack.accuracy - 10;
-      state.enemyStatus.heal.accuracy = state.enemyStatus.heal.accuracy - 10;
+    decEnemyAccuracy: (state) => {
+      if (state.enemyStatus.lightAttack.accuracy > 0 && 
+          state.enemyStatus.heavyAttack.accuracy > 0 && 
+          state.enemyStatus.heal.accuracy > 0) {
+        state.enemyStatus.lightAttack.accuracy = state.enemyStatus.lightAttack.accuracy - 10;
+        state.enemyStatus.heavyAttack.accuracy = state.enemyStatus.heavyAttack.accuracy - 10;
+        state.enemyStatus.heal.accuracy = state.enemyStatus.heal.accuracy - 10;
+      }
     },
     setEnemyHealth: (state, action) => {
       state.enemyStatus.health = action.payload;
@@ -52,7 +56,7 @@ export const turnBasedGameSlice = createSlice({
     setPlayerPlayState: (state, action) => {
       state.playerStatus.playState = action.payload;
     },
-    incPlayerAccuracy: state => {
+    incPlayerAccuracy: (state) => {
       if (state.playerStatus.lightAttack.accuracy < 100) {
         state.playerStatus.lightAttack.accuracy += 10;
         state.playerStatus.lightAttack.count += 1;
@@ -66,7 +70,7 @@ export const turnBasedGameSlice = createSlice({
         state.playerStatus.heal.count += 1;
       }
     },
-    decPlayerAccuracy: state => {
+    decPlayerAccuracy: (state) => {
       if (state.playerStatus.lightAttack.accuracy > 0 && state.playerStatus.lightAttack.count > 0) {
         state.playerStatus.lightAttack.accuracy -= 10;
         state.playerStatus.lightAttack.count -= 1;
@@ -80,12 +84,12 @@ export const turnBasedGameSlice = createSlice({
         state.playerStatus.heal.count -= 1;
       }
     },
-    resetPlayerAccuracy: state => {
+    setPlayerAccuracy: (state) => {
       state.playerStatus.lightAttack.accuracy = 80;
       state.playerStatus.lightAttack.count = 0;
-      state.playerStatus.heavyAttack.accuracy = 40;
+      state.playerStatus.heavyAttack.accuracy = 60;
       state.playerStatus.heavyAttack.count = 0;
-      state.playerStatus.heal.accuracy = 60;
+      state.playerStatus.heal.accuracy = 50;
       state.playerStatus.heal.count = 0;
       state.playerStatus.magic.count = state.playerStatus.magic.amount;
     },
@@ -97,10 +101,10 @@ export const turnBasedGameSlice = createSlice({
       state.playerStatus.magic.count = action.payload;
       state.playerStatus.maxMagic = action.payload;
     },
-    incPlayerMagic: state => {
+    incPlayerMagic: (state) => {
       state.playerStatus.magic.amount += 1;
     },
-    decPlayerMagic: state => {
+    decPlayerMagic: (state) => {
       state.playerStatus.magic.amount -= 1;
     },
     setPlayerResist: (state, action) => {
@@ -132,9 +136,9 @@ export const {
   setPlayerName,
   setPlayerAction,
   setPlayerPlayState,
+  setPlayerAccuracy,
   incPlayerAccuracy,
   decPlayerAccuracy,
-  resetPlayerAccuracy,
   setPlayerHealth,
   setPlayerMagic,
   incPlayerMagic,

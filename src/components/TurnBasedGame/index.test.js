@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux'
 import { store } from 'store.js';
-import { TurnBasedGame, setPlayerCrit } from 'components';
+import { TurnBasedGame } from 'components';
 import * as helpers from 'helpers';
 
 beforeEach(() => {
@@ -12,9 +12,6 @@ beforeEach(() => {
   jest.spyOn(helpers, 'attack').mockImplementation(() => 10);
   jest.spyOn(helpers, 'heal').mockImplementation(() => 20);
   jest.spyOn(helpers, 'roll').mockImplementation(() => false);
-
-  // increase crit rate
-  store.dispatch(setPlayerCrit(50));
 
   render(<Provider store={store}>
     <TurnBasedGame />
@@ -85,29 +82,6 @@ test('TurnBasedGame changes difficulty', async () => {
   });
 });
 
-test('TurnBasedGame handles inc and dec accuracy', async () => {
-  const user = userEvent.setup();
-
-  // choose easy difficulty
-  await user.click(screen.getAllByRole('button')[0]);
-  expect(screen.getAllByRole('button')[1]).toHaveTextContent('Light Attack 10 Damage 80% Accurate');
-  expect(screen.getAllByRole('button')[2]).toHaveTextContent('Heavy Attack 20 Damage 40% Accurate');
-
-  // increase accuracy
-  for (let i = 0; i < 7; i++) {
-    await user.click(screen.getAllByRole('button')[4]);
-  }
-  expect(screen.getAllByRole('button')[1]).toHaveTextContent('Light Attack 10 Damage 100% Accurate');
-  expect(screen.getAllByRole('button')[2]).toHaveTextContent('Heavy Attack 20 Damage 100% Accurate');
-
-  // decrease accuracy
-  for (let i = 0; i < 7; i++) {
-    await user.click(screen.getAllByRole('button')[3]);
-  }
-  expect(screen.getAllByRole('button')[1]).toHaveTextContent('Light Attack 10 Damage 80% Accurate');
-  expect(screen.getAllByRole('button')[2]).toHaveTextContent('Heavy Attack 20 Damage 40% Accurate');
-});
-
 test('TurnBasedGame handles attack and heal animations', async () => {
   const user = userEvent.setup();
 
@@ -165,4 +139,38 @@ test('TurnBasedGame handles death animations', async () => {
   await waitFor(() => {
     expect(screen.getAllByRole('button').length).toBe(1);
   });
+});
+
+test('TurnBasedGame handles inc and dec accuracy', async () => {
+  const user = userEvent.setup();
+
+  // choose easy difficulty
+  await user.click(screen.getAllByRole('button')[0]);
+
+  // light attack
+  await user.click(screen.getAllByRole('button')[1]);
+  // wait for battleSequence setTimeout
+  await waitFor(() => {
+    expect(screen.getAllByRole('button').length).toBe(6);
+  });
+
+  expect(screen.getAllByRole('button')[1]).toHaveTextContent('Light Attack 10 Damage 80% Accurate');
+  expect(screen.getAllByRole('button')[2]).toHaveTextContent('Heavy Attack 15 Damage 60% Accurate');
+  expect(screen.getAllByRole('button')[3]).toHaveTextContent('Heal 20 Health 50% Accurate');
+
+  // increase accuracy 6 times
+  for (let i = 0; i < 6; i++) {
+    await user.click(screen.getAllByRole('button')[5]);
+  }
+  expect(screen.getAllByRole('button')[1]).toHaveTextContent('Light Attack 10 Damage 100% Accurate');
+  expect(screen.getAllByRole('button')[2]).toHaveTextContent('Heavy Attack 15 Damage 100% Accurate');
+  expect(screen.getAllByRole('button')[3]).toHaveTextContent('Heal 20 Health 100% Accurate');
+
+  // decrease accuracy 6 times
+  for (let i = 0; i < 6; i++) {
+    await user.click(screen.getAllByRole('button')[4]);
+  }
+  expect(screen.getAllByRole('button')[1]).toHaveTextContent('Light Attack 10 Damage 80% Accurate');
+  expect(screen.getAllByRole('button')[2]).toHaveTextContent('Heavy Attack 15 Damage 60% Accurate');
+  expect(screen.getAllByRole('button')[3]).toHaveTextContent('Heal 20 Health 50% Accurate');
 });

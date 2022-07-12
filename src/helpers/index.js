@@ -61,13 +61,13 @@ export const playerData = {
     count: 0
   },
   heavyAttack: {
-    damage: 20,
-    accuracy: 40,
+    damage: 15,
+    accuracy: 60,
     count: 0
   },
   heal: {
-    health: 15,
-    accuracy: 60,
+    health: 20,
+    accuracy: 50,
     count: 0
   },
   health: 100,
@@ -78,7 +78,7 @@ export const playerData = {
   },
   maxMagic: 12,
   resistance: 0,
-  evasion: 30,
+  evasion: 20,
   taunt: 0,
   crit: 0
 };
@@ -92,12 +92,12 @@ export const enemyData = {
     accuracy: 80
   },
   heavyAttack: {
-    damage: 20,
-    accuracy: 40
+    damage: 15,
+    accuracy: 60
   },
   heal: {
-    health: 15,
-    accuracy: 60
+    health: 20,
+    accuracy: 50
   },
   health: 100,
   maxHealth: 100,

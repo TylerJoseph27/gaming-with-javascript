@@ -36,7 +36,7 @@ test('BattleMenu loads and displays without errors', () => {
   });
 
   expect(screen.getAllByRole('button')[0]).toHaveTextContent('Light Attack 10 Damage 80% Accurate');
-  expect(screen.getAllByRole('button')[1]).toHaveTextContent('Heavy Attack 20 Damage 40% Accurate');
+  expect(screen.getAllByRole('button')[1]).toHaveTextContent('Heavy Attack 15 Damage 60% Accurate');
   expect(screen.getAllByRole('button')[2]).toHaveTextContent('Decrease Accuracy');
   expect(screen.getAllByRole('button')[3]).toHaveTextContent('Increase Accuracy');
 });
@@ -90,7 +90,7 @@ test('BattleMenu handles heal success and fail', async () => {
     expect(screen.getAllByRole('button').length).toBe(5);
   });
 
-  expect(screen.getAllByRole('button')[2]).toHaveTextContent('Heal 15 Health 60% Accurate');
+  expect(screen.getAllByRole('button')[2]).toHaveTextContent('Heal 20 Health 50% Accurate');
 
   // player and enemy heal fail
   helpers.heal.mockImplementationOnce(() => 0)
