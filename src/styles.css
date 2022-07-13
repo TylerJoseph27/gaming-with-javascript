@@ -18,7 +18,8 @@
   --dmg-clr: hsl(0, 100%, 50%);
   --acc-clr: hsl(210, 100%, 60%);
   --heal-clr: hsl(150, 100%, 40%);
-  --px-size: 1;
+  --px-size-m: 1;
+  --px-size-t: 1;
   --enemy-x: 140px;
   --enemy-y: 93px;
   --player-x: 128px;
@@ -125,12 +126,17 @@ li.nav__item:focus::after {
 
 main {
   /* keep footer at bottom */
-  min-height: calc(100vh - 39.75rem);
-  margin: 2rem;
+  min-height: calc(100vh - 37.75rem);
 }
 
 .pixel-art {
   image-rendering: pixelated;
+}
+
+.home-screen,
+.memory-game,
+.turn-based-game {
+  margin: 2rem auto;
 }
 
 .game__button {
@@ -161,7 +167,8 @@ main {
 
 .home-screen {
   max-width: 1440px;
-  margin: auto;
+  margin: 2rem auto;
+  padding: 0 2rem;
 }
 .home-screen h2 {
   text-align: center;
@@ -184,7 +191,7 @@ main {
 .memory-game__board {
   width: 100%;
   /* 0.5rem margin + 2rem padding per card is 8 rem */
-  max-width: calc((128px * var(--px-size)) + 8rem);
+  max-width: calc((128px * var(--px-size-m)) + 8rem);
   margin: 2rem;
   flex-wrap: wrap;
   justify-content: center;
@@ -193,8 +200,8 @@ main {
 
 .memory-game__card {
   /* 1rem for padding */
-  width: calc((32px * var(--px-size)) + 1rem);
-  height: calc((32px * var(--px-size)) + 1rem);
+  width: calc((32px * var(--px-size-m)) + 1rem);
+  height: calc((32px * var(--px-size-m)) + 1rem);
   margin: 0.5rem;
   position: relative;
   transform-style: preserve-3d;
@@ -253,8 +260,8 @@ main {
 
 .health__bar-max,
 .magic__bar-max {
-  width: calc(128px * var(--px-size));
-  height: min(0.75rem, calc(0.25rem * var(--px-size)));
+  width: calc(128px * var(--px-size-t));
+  height: min(0.75rem, calc(0.25rem * var(--px-size-t)));
   background-color: var(--bg-clr-1);
   margin: 0.25rem auto;
 }
@@ -299,8 +306,8 @@ main {
 /* bringer of death sprite */
 
 .enemy {
-  width: calc(var(--enemy-x) * var(--px-size));
-  height: calc(var(--enemy-y) * var(--px-size));
+  width: calc(var(--enemy-x) * var(--px-size-t));
+  height: calc(var(--enemy-y) * var(--px-size-t));
 }
 .enemy--spell {
   top: 1.5rem;
@@ -308,152 +315,152 @@ main {
   transition: opacity 0.5s;
 }
 .enemy__sprite--death {
-  width: calc((var(--enemy-x) * 10) * var(--px-size));
+  width: calc((var(--enemy-x) * 10) * var(--px-size-t));
   animation: move-sprite 1s steps(10);
 }
 .enemy__sprite--heavy-attack {
-  width: calc((var(--enemy-x) * 9) * var(--px-size));
+  width: calc((var(--enemy-x) * 9) * var(--px-size-t));
   animation: move-sprite 0.9s steps(9);
 }
 .enemy__sprite--light-attack {
-  width: calc((var(--enemy-x) * 10) * var(--px-size));
+  width: calc((var(--enemy-x) * 10) * var(--px-size-t));
   animation: move-sprite 1s steps(10);
 }
 .enemy__sprite--idle {
-  width: calc((var(--enemy-x) * 8) * var(--px-size));
+  width: calc((var(--enemy-x) * 8) * var(--px-size-t));
   animation: move-sprite 1.2s steps(8) infinite;
 }
 .enemy__sprite--spell {
-  width: calc((var(--enemy-x) * 16) * var(--px-size));
+  width: calc((var(--enemy-x) * 16) * var(--px-size-t));
   animation: move-sprite 1.6s steps(16);
 }
 .enemy__sprite--walk {
-  width: calc((var(--enemy-x) * 8) * var(--px-size));
+  width: calc((var(--enemy-x) * 8) * var(--px-size-t));
   animation: move-sprite 0.96s steps(8) infinite;
 }
 
 /* archer sprite */
 
 .player-archer {
-  width: calc(var(--player-x) * var(--px-size));
-  height: calc(var(--player-y) * var(--px-size));
+  width: calc(var(--player-x) * var(--px-size-t));
+  height: calc(var(--player-y) * var(--px-size-t));
 }
 .player-archer--light-attack {
-  width: calc(var(--archer-x) * var(--px-size));
+  width: calc(var(--archer-x) * var(--px-size-t));
 }
 .player-archer--evade {
-  transform: translate(calc(34px * var(--px-size)));
+  transform: translate(calc(34px * var(--px-size-t)));
   transition: transform 0.84s;
 }
 .player__sprite-archer {
   top: 40.6%;
 }
 .player__sprite-archer--death {
-  width: calc((var(--player-x) * 24) * var(--px-size));
+  width: calc((var(--player-x) * 24) * var(--px-size-t));
   animation: move-sprite 1.8s steps(24);
 }
 .player__sprite-archer--evade {
-  width: calc((var(--player-x) * 14) * var(--px-size));
+  width: calc((var(--player-x) * 14) * var(--px-size-t));
   animation: move-sprite 0.84s steps(14);
 }
 .player__sprite-archer--heavy-attack {
-  width: calc((var(--player-x) * 28) * var(--px-size));
+  width: calc((var(--player-x) * 28) * var(--px-size-t));
   animation: move-sprite 1.4s steps(28);
 }
 .player__sprite-archer--idle {
-  width: calc((var(--player-x) * 8) * var(--px-size));
+  width: calc((var(--player-x) * 8) * var(--px-size-t));
   animation: move-sprite 1.2s steps(8) infinite;
 }
 .player__sprite-archer--light-attack {
-  width: calc((var(--archer-x) * 14) * var(--px-size));
+  width: calc((var(--archer-x) * 14) * var(--px-size-t));
   animation: move-sprite 1.05s steps(14);
 }
 .player__sprite-archer--walk {
-  width: calc((var(--player-x) * 8) * var(--px-size));
+  width: calc((var(--player-x) * 8) * var(--px-size-t));
   animation: move-sprite 0.6s steps(8) infinite;
 }
 
 /* king sprite */
 
 .player-king {
-  width: calc(var(--player-x) * var(--px-size));
-  height: calc(var(--player-y) * var(--px-size));
+  width: calc(var(--player-x) * var(--px-size-t));
+  height: calc(var(--player-y) * var(--px-size-t));
 }
 .player-king--heavy-attack {
-  width: calc(var(--king-x) * var(--px-size));
+  width: calc(var(--king-x) * var(--px-size-t));
 }
 .player__sprite-king {
   top: 40%;
 }
 .player__sprite-king--death {
-  width: calc((var(--player-x) * 37) * var(--px-size));
+  width: calc((var(--player-x) * 37) * var(--px-size-t));
   animation: move-sprite 1.85s steps(37);
 }
 .player__sprite-king--evade {
-  width: calc((var(--player-x) * 14) * var(--px-size));
+  width: calc((var(--player-x) * 14) * var(--px-size-t));
   animation: move-sprite 0.84s steps(14);
 }
 .player__sprite-king--heavy-attack {
-  width: calc((var(--king-x) * 58) * var(--px-size));
+  width: calc((var(--king-x) * 58) * var(--px-size-t));
   animation: move-sprite 2.175s steps(58);
 }
 .player__sprite-king--idle {
-  width: calc((var(--player-x) * 18) * var(--px-size));
+  width: calc((var(--player-x) * 18) * var(--px-size-t));
   animation: move-sprite 1.35s steps(18) infinite;
 }
 .player__sprite-king--light-attack {
-  width: calc((var(--player-x) * 30) * var(--px-size));
+  width: calc((var(--player-x) * 30) * var(--px-size-t));
   animation: move-sprite 1.5s steps(30);
 }
 .player__sprite-king--walk {
-  width: calc((var(--player-x) * 8) * var(--px-size));
+  width: calc((var(--player-x) * 8) * var(--px-size-t));
   animation: move-sprite 0.8s steps(8) infinite;
 }
 
 /* warrior sprite */
 
 .player-warrior {
-  width: calc(var(--warrior-x) * var(--px-size));
-  height: calc(var(--player-y) * var(--px-size));
+  width: calc(var(--warrior-x) * var(--px-size-t));
+  height: calc(var(--player-y) * var(--px-size-t));
 }
 .player-warrior--critical-attack {
-  width: calc(260px * var(--px-size));
-  height: calc(var(--player-y) * var(--px-size));
+  width: calc(260px * var(--px-size-t));
+  height: calc(var(--player-y) * var(--px-size-t));
 }
 .player__sprite-warrior {
   top: 40%;
 }
 .player__sprite-warrior--critical-attack {
-  width: calc((260px * 40) * var(--px-size));
+  width: calc((260px * 40) * var(--px-size-t));
   animation: move-sprite 2.4s steps(40);
   top: 15%;
 }
 .player__sprite-warrior--death {
-  width: calc((var(--warrior-x) * 40) * var(--px-size));
+  width: calc((var(--warrior-x) * 40) * var(--px-size-t));
   animation: move-sprite 2s steps(40);
 }
 .player__sprite-warrior--evade {
-  width: calc((var(--warrior-x) * 8) * var(--px-size));
+  width: calc((var(--warrior-x) * 8) * var(--px-size-t));
   animation: move-sprite 0.8s steps(8);
 }
 .player__sprite-warrior--heavy-attack {
-  width: calc((var(--warrior-x) * 30) * var(--px-size));
+  width: calc((var(--warrior-x) * 30) * var(--px-size-t));
   animation: move-sprite 1.5s steps(30);
 }
 .player__sprite-warrior--idle {
-  width: calc((var(--warrior-x) * 16) * var(--px-size));
+  width: calc((var(--warrior-x) * 16) * var(--px-size-t));
   animation: move-sprite 1.6s steps(16) infinite;
 }
 .player__sprite-warrior--light-attack {
-  width: calc((var(--warrior-x) * 30) * var(--px-size));
+  width: calc((var(--warrior-x) * 30) * var(--px-size-t));
   animation: move-sprite 1.8s steps(30);
 }
 .player__sprite-warrior--taunt {
-  width: calc((var(--warrior-x) * 18) * var(--px-size));
+  width: calc((var(--warrior-x) * 18) * var(--px-size-t));
   animation: move-sprite 1.35s steps(18);
 }
 .player__sprite-warrior--walk {
-  width: calc((var(--warrior-x) * 8) * var(--px-size));
+  width: calc((var(--warrior-x) * 8) * var(--px-size-t));
   animation: move-sprite 0.96s steps(8) infinite;
 }
 
@@ -513,6 +520,19 @@ footer {
 
 /* media queries */
 
+@media only screen and (min-width: 210px)  {
+  :root {
+    --px-size-t: 1.5;
+  }
+}
+
+@media only screen and (min-width: 337px)  {
+  :root {
+    --px-size-m: 1.5;
+    --px-size-t: 2;
+  }
+}
+
 @media only screen and (max-width: 368px)  {
   .footer__text p {
     margin: 1rem;
@@ -525,10 +545,11 @@ footer {
 
 @media only screen and (min-width: 432px)  {
   :root {
-    --px-size: 2;
+    --px-size-m: 2;
+    --px-size-t: 2.5;
   }
   main {
-    min-height: calc(100vh - 31.25rem);
+    min-height: calc(100vh - 29.25rem);
   }
   .nav menu {
     flex-direction: row;
@@ -551,19 +572,17 @@ footer {
 
 @media only screen and (min-width: 720px)  {
   :root {
-    --px-size: 3;
-  }
-  main {
-    min-height: calc(100vh - 27.1875rem);
+    --px-size-m: 3;
+    --px-size-t: 3;
   }
   .memory-game__board {
     /* 0.5rem margin + 2rem padding per card is 12 rem */
-    max-width: calc((128px * var(--px-size)) + 12rem);
+    max-width: calc((128px * var(--px-size-m)) + 12rem);
   }
   .memory-game__card {
     /* 2rem for padding */
-    width: calc((32px * var(--px-size)) + 2rem);
-    height: calc((32px * var(--px-size)) + 2rem);
+    width: calc((32px * var(--px-size-m)) + 2rem);
+    height: calc((32px * var(--px-size-m)) + 2rem);
   }
   .memory-game__card-front,
   .memory-game__card-back {
@@ -571,6 +590,15 @@ footer {
   }
   .enemy--spell {
     top: 6rem;
+  }
+}
+
+@media only screen and (min-width: 821px)  {
+  :root {
+    --px-size-t: 3.5;
+  }
+  main {
+    min-height: calc(100vh - 25.1875rem);
   }
   .footer__text {
     flex-direction: row;
@@ -580,7 +608,8 @@ footer {
 
 @media only screen and (min-width: 1200px)  {
   :root {
-    --px-size: 2;
+    --px-size-m: 2;
+    --px-size-t: 2;
   }
   header.nav {
     display: grid;
@@ -601,7 +630,7 @@ footer {
     align-items: flex-end;
     justify-content: space-between;
     /* 400px for sprite width and 2rem for padding */
-    width: min(100%, calc((400px * var(--px-size)) + 2rem));
+    width: min(100%, calc((400px * var(--px-size-t)) + 2rem));
     background-image: url('assets/background.png');
     background-position: bottom;
     background-size: cover;
@@ -630,41 +659,49 @@ footer {
   }
   .enemy--walk,
   .enemy--light-attack {
-    transform: translate(calc(-220px * var(--px-size)));
+    transform: translate(calc(-220px * var(--px-size-t)));
   }
   .player-archer--walk {
-    transform: translate(calc(240px * var(--px-size)));
+    transform: translate(calc(240px * var(--px-size-t)));
   }
   .player-archer--light-attack {
-    transform: translate(calc(220px * var(--px-size)));
+    transform: translate(calc(220px * var(--px-size-t)));
   }
   .player-archer--heavy-attack {
-    transform: translate(calc(250px * var(--px-size)));
+    transform: translate(calc(250px * var(--px-size-t)));
   }
   .player-king--walk,
   .player-king--light-attack {
-    transform: translate(calc(270px * var(--px-size)));
+    transform: translate(calc(270px * var(--px-size-t)));
   }
   .player-king--heavy-attack {
-    transform: translate(calc(250px * var(--px-size)));
+    transform: translate(calc(250px * var(--px-size-t)));
   }
   .player-warrior--walk,
   .player-warrior--light-attack,
   .player-warrior--heavy-attack {
-    transform: translate(calc(240px * var(--px-size)));
+    transform: translate(calc(240px * var(--px-size-t)));
   }
   .player-warrior--critical-attack {
-    transform: translate(calc(160px * var(--px-size)));
+    transform: translate(calc(160px * var(--px-size-t)));
+  }
+}
+
+@media only screen and (min-width: 1600px)  {
+  :root {
+    --px-size-m: 3;
+    --px-size-t: 3;
   }
 }
 
 @media only screen and (min-width: 1920px)  {
   :root {
     font-size: 18px;
-    --px-size: 4;
+    --px-size-m: 4;
+    --px-size-t: 4;
   }
   main {
-    min-height: calc(100vh - 26.8rem);
+    min-height: calc(100vh - 24.8rem);
   }
   .enemy--spell {
     top: -4.5rem;
@@ -674,10 +711,11 @@ footer {
 @media only screen and (min-width: 2560px)  {
   :root {
     font-size: 20px;
-    --px-size: 5.5;
+    --px-size-m: 5.5;
+    --px-size-t: 5.5;
   }
   main {
-    min-height: calc(100vh - 26.35rem);
+    min-height: calc(100vh - 24.35rem);
   }
 }
 
@@ -697,7 +735,7 @@ footer {
     transform: translate();
   }
   50% {
-    transform: translate(calc(14px * var(--px-size)));
+    transform: translate(calc(14px * var(--px-size-t)));
   }
   100% {
     transform: translate();
