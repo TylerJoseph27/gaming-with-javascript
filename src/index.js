@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from 'store.js';
 import { App } from 'components';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import 'styles.css';
 
 const container = document.getElementById('root');
@@ -15,3 +16,5 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
+
+serviceWorkerRegistration.register();
